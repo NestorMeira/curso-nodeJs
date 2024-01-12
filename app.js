@@ -21,7 +21,21 @@
 //EXPRESS
 
 const express = require('express');
+
+require('dotenv').config();
+
+
+
+
+const pg = require('pg');
+
+
 const app = express();
+
+const pool= new pg.Pool({
+    connectionString:process.env.DATABASE_URL,
+    ssl: true
+})
 
 const port = process.env.PORT || 3000;
 
@@ -34,6 +48,10 @@ app.use(express.static(__dirname + "/public"))
 
 app.get('/',(req, res)  => {
     res.render("index", {titulo : "mi titulo dinámicoooo"})
+})
+app.get('/ping', async(req, res)  => {
+   const result= await pool.query('SELECT NOW()')
+    return res.json(result.rows[0])
 })
 
 app.get('/servicios', (req, res) =>{

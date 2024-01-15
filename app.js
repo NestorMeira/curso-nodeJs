@@ -20,15 +20,9 @@
 
 
 
-
-
-
-
-
-
 // const pg = require('pg');
 // const pool= new pg.Pool({
-//connectionString:process.env.DATABASE_URL,
+// connectionString:process.env.PORT,
     
 // })
 
@@ -38,10 +32,8 @@
 
 const mongoose = require('mongoose');
 
-const user = 'nodeJs-curso';
-const password = 'eWTQgL2mr6AMXlyz';
-const dbname = 'veterinaria'
-const uri = `mongodb+srv://${user}:${password}@cluster0.igryqc9.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.igryqc9.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`;
 
 mongoose.connect(uri,
    { useNewUrlParser:true, useUnifiedTopology:true}

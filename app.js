@@ -29,7 +29,7 @@
 
 
 //Conexión a base de datos mongoose
-
+require('dotenv').config();
 const mongoose = require('mongoose');
 
 

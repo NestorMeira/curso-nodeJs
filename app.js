@@ -18,53 +18,67 @@
 // })
 
 
-//EXPRESS
+
+
+
+
+
+
+
+
+// const pg = require('pg');
+// const pool= new pg.Pool({
+//connectionString:process.env.DATABASE_URL,
+    
+// })
+
+
+
+//Conexión a base de datos mongoose
+
+const mongoose = require('mongoose');
+
+const user = 'nodeJs-curso';
+const password = 'eWTQgL2mr6AMXlyz';
+const dbname = 'veterinaria'
+const uri = `mongodb+srv://${user}:${password}@cluster0.igryqc9.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+
+mongoose.connect(uri,
+   { useNewUrlParser:true, useUnifiedTopology:true}
+)
+
+    .then(()=>console.log('base de datos conectada'))
+    .catch(e => console.log(e))
+
+
 
 const express = require('express');
+const app = express();
 
 require('dotenv').config();
 
 
 
-
-const pg = require('pg');
-
-
-const app = express();
-
-const pool= new pg.Pool({
-    connectionString:process.env.DATABASE_URL,
-    
-})
-
 const port = process.env.PORT || 3000;
 
 //motor de plantillas
 
-app.set('view engine', 'ejs')
-app.set('views', __dirname + '/views')
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
 
-app.use(express.static(__dirname + "/public"))
+app.use(express.static(__dirname + "/public"));
 
-app.get('/',(req, res)  => {
-    res.render("index", {titulo : "mi titulo dinámicoooo"})
-})
-app.get('/ping', async(req, res)  => {
-   const result= await pool.query('SELECT NOW()')
-    return res.json(result.rows[0])
-})
+//Rutas Web
+app.use('/', require('./router/RutasWeb'));
+app.use('/mascotas', require('./router/Mascotas'));
 
-app.get('/servicios', (req, res) =>{
-    res.render("servicios", {tituloServivios : "servicioss dinamicooooooo"})
-
-})
 
 app.use((req, res , next) => {
     res.status(404).render("404", {
         titulo:"404",
         descripcion:"titulo del sitio web"
     })
-})
+});
 
 app.listen(port, ()=>{
     console.log('servidor sirviendooooo' ,port)
